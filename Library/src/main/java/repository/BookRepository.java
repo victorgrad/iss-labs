@@ -172,4 +172,14 @@ public class BookRepository implements BookRepo {
             throw new Exception("Couldn't reduce quantity repo");
         }
     }
+
+    @Override
+    public void increaseQuantity(Integer id) throws Exception {
+
+    }
+
+    @Override
+    public Set<Book> findAllAvaliable() throws Exception {
+        return null;
+    }
 }

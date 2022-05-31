@@ -1,9 +1,6 @@
 package service;
 
-import model.Book;
-import model.BookModel;
-import model.Status;
-import model.User;
+import model.*;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -30,6 +27,16 @@ public class Service implements IService{
     }
 
     @Override
+    public void updateUser(String username, String password, Status status, String firstName, String lastName) throws Exception {
+        userService.updateUser(username,password,status,firstName,lastName);
+    }
+
+    @Override
+    public void deleteUser(String username) throws Exception {
+        userService.deleteUser(username);
+    }
+
+    @Override
     public Status authenticate(String username, String password) throws Exception {
         return userService.authenticate(username,password);
     }
@@ -45,7 +52,37 @@ public class Service implements IService{
     }
 
     @Override
-    public void addBook(String name, String author, String category, LocalDate release, Integer quantity) throws Exception {
-        bookService.addBook(name,author,category,release,quantity);
+    public Set<Book> getAvaliableBooks() throws Exception {
+        return bookService.getAvaliableBooks();
+    }
+
+    @Override
+    public Integer addBook(String name, String author, String category, LocalDate release, Integer quantity) throws Exception {
+        return bookService.addBook(name,author,category,release,quantity);
+    }
+
+    @Override
+    public void deleteBook(Integer bookId) throws Exception {
+        bookService.deleteBook(bookId);
+    }
+
+    @Override
+    public void receive(Integer bookId, String username) throws Exception {
+        borrowService.receive(bookId,username);
+    }
+
+    @Override
+    public Set<Borrow> getBorrows() throws Exception {
+        return borrowService.getBorrows();
+    }
+
+    @Override
+    public Set<User> getLibrarians() throws Exception {
+        return userService.getLibrarians();
+    }
+
+    @Override
+    public Set<User> getSubscribers() throws Exception {
+        return userService.getSubscribers();
     }
 }

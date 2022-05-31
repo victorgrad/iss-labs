@@ -211,4 +211,14 @@ public class UserRepository implements UserRepo{
         }
         return Status.ERROR;
     }
+
+    @Override
+    public Set<User> getLibrarians() throws Exception {
+        return null;
+    }
+
+    @Override
+    public Set<User> getSubscribers() throws Exception {
+        return null;
+    }
 }

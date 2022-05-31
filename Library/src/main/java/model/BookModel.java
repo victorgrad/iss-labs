@@ -6,6 +6,7 @@ public class BookModel {
     private String author;
     private String category;
     private String release;
+    private Integer quantity;
 
     public BookModel(Book book){
         this.id = book.getId();
@@ -13,6 +14,16 @@ public class BookModel {
         this.author = book.getAuthor();
         this.category = book.getCategory();
         this.release = book.getRelease().toString();
+        this.quantity= book.getQuantity();
+    }
+
+    public BookModel(Integer id, String name, String author, String category, String release, Integer quantity) {
+        this.id = id;
+        this.name = name;
+        this.author = author;
+        this.category = category;
+        this.release = release;
+        this.quantity = quantity;
     }
 
     public Integer getId() {
@@ -53,6 +64,14 @@ public class BookModel {
 
     public void setRelease(String release) {
         this.release = release;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     @Override

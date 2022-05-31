@@ -5,6 +5,11 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Status;
+import model.User;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import repository.*;
 import service.*;
 
@@ -21,10 +26,13 @@ public class main extends Application {
         String url = "jdbc:postgresql://localhost:5432/Library";
         String username = "postgres";
         String password = "postgres";
-
-        UserRepo userRepo = new UserRepository(url,username,password);
-        BorrowRepo borrowRepo = new BorrowRepository(url,username,password);
-        BookRepo bookRepo = new BookRepository(url,username,password);
+        SessionFactory sessionFactory = initialize();
+        //UserRepo userRepo = new UserRepository(url,username,password);
+        UserRepo userRepo = new UserORMRepository(sessionFactory);
+        //BorrowRepo borrowRepo = new BorrowRepository(url,username,password);
+        BorrowRepo borrowRepo = new BorrowORMRepository(sessionFactory);
+        //BookRepo bookRepo = new BookRepository(url,username,password);
+        BookRepo bookRepo = new BookORMRepository(sessionFactory);
 
         BorrowService borrowService = new BorrowService(borrowRepo,bookRepo);
         UserService userService = new UserService(userRepo);
@@ -49,5 +57,20 @@ public class main extends Application {
         loginController.setService(service);
         loginController.setLogInStage(login);
         return login;
+    }
+
+
+    public SessionFactory initialize() {
+        SessionFactory sessionFactory = null;
+        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
+                .configure() // configures settings from hibernate.cfg.xml
+                .build();
+        try {
+            sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
+        } catch (Exception e) {
+            System.err.println("Exception " + e);
+            StandardServiceRegistryBuilder.destroy(registry);
+        }
+        return sessionFactory;
     }
 }

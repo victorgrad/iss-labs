@@ -38,6 +38,9 @@ public class LogInController {
     public void authenticate(){
         try {
             Status status = service.authenticate(usernameField.getText(),passwordField.getText());
+            if(status == null){
+                status = Status.ERROR;
+            }
             switch (status){
                 case ERROR ->{
                     throw new Exception("Credentiale gresite");
@@ -46,8 +49,10 @@ public class LogInController {
                     loadBooksStage(service);
                 }
                 case LIBRARIAN -> {
+                    loadLibrarianStage(service);
                 }
                 case ADMIN -> {
+                    loadAdminStage(service);
                 }
             }
             nextStage.show();
@@ -73,6 +78,42 @@ public class LogInController {
         booksController.setLoggedUser(service.getUser(usernameField.getText()));
         booksController.init();
         nextStage = books;
+    }
+
+    private void loadAdminStage(IService service) throws Exception {
+        Stage admin = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/AdminView.fxml"));
+
+        AnchorPane pane = loader.load();
+        admin.setScene(new Scene(pane));
+        admin.setTitle("Admin pannel");
+
+        AdminController adminController = loader.getController();
+
+        adminController.setService(service);
+        adminController.setAdminStage(admin);
+        adminController.setLoggedUser(service.getUser(usernameField.getText()));
+        adminController.init();
+        nextStage = admin;
+    }
+
+    private void loadLibrarianStage(IService service) throws Exception {
+        Stage librarian = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/LibrarianView.fxml"));
+
+        AnchorPane pane = loader.load();
+        librarian.setScene(new Scene(pane));
+        librarian.setTitle("Librarian pannel");
+
+        LibrarianController librarianController = loader.getController();
+
+        librarianController.setService(service);
+        librarianController.setLibrarianStage(librarian);
+        librarianController.setLoggedUser(service.getUser(usernameField.getText()));
+        librarianController.init();
+        nextStage = librarian;
     }
 
 }

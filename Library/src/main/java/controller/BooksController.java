@@ -79,7 +79,7 @@ public class BooksController {
 
     public void refresh() throws Exception {
         books.clear();
-        service.getBooks().forEach(book -> {
+        service.getAvaliableBooks().forEach(book -> {
             BookModel aux = new BookModel(book);
             books.add(aux);
         });
@@ -111,7 +111,7 @@ public class BooksController {
         try {
             service.rent(loggedUser, basketBooks);
             basketBooks.clear();
-            refreshBasket();
+            refresh();
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage(), ButtonType.OK);
             alert.showAndWait();

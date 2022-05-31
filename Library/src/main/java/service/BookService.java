@@ -17,9 +17,18 @@ public class BookService {
         return bookRepo.findAll();
     }
 
-    public void addBook(String name, String author, String category, LocalDate release, Integer quantity) throws Exception {
+    public Set<Book> getAvaliableBooks() throws Exception {
+        return bookRepo.findAllAvaliable();
+    }
+
+    public Integer addBook(String name, String author, String category, LocalDate release, Integer quantity) throws Exception {
         Book book = new Book(name,author,category,release);
         book.setQuantity(quantity);
-        bookRepo.save(book);
+        book.setInitial_quantity(quantity);
+        return bookRepo.save(book);
+    }
+
+    public void deleteBook(Integer bookId)throws Exception{
+        bookRepo.delete(bookId);
     }
 }

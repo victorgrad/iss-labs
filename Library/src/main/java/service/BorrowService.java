@@ -1,12 +1,12 @@
 package service;
 
-import model.Book;
 import model.BookModel;
 import model.Borrow;
 import model.User;
-import org.javatuples.Triplet;
 import repository.BookRepo;
 import repository.BorrowRepo;
+import utils.BorrowId;
+import utils.Trip;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -25,8 +25,8 @@ public class BorrowService {
         Set<String> titles = new HashSet<>();
         for(BookModel book : books){
             if(bookRepo.findQuantity(book.getId())>0){
-                Borrow borrow = new Borrow();
-                borrow.setId(new Triplet<>(user.getId(), book.getId(), LocalDate.now()));
+                Borrow borrow = new Borrow(LocalDate.now());
+                borrow.setId(new BorrowId(user.getId(), book.getId()));
                 borrowRepo.save(borrow);
                 bookRepo.reduceQuantity(book.getId());
             }
@@ -40,5 +40,17 @@ public class BorrowService {
                 message+=title+"\n";
             throw new Exception(message);
         }
+    }
+
+    public void receive(Integer bookId,String username) throws Exception {
+        bookRepo.increaseQuantity(bookId);
+        BorrowId borrowId = new BorrowId();
+        borrowId.setId(bookId);
+        borrowId.setUsername(username);
+        borrowRepo.delete(borrowId);
+    }
+
+    public Set<Borrow> getBorrows() throws Exception {
+        return borrowRepo.findAll();
     }
 }

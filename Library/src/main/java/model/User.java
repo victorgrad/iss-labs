@@ -13,6 +13,7 @@ public class User extends Entity<String>{
 
 
     public User(){}
+
     /**
      * Class constructor
      * @param id string the id of the user
@@ -28,9 +29,9 @@ public class User extends Entity<String>{
     }
 
     @Id
-    public String getId(){return super.getId();}
+    public String getUsername(){return super.getId();}
 
-    public void setId(String username){
+    public void setUsername(String username){
         super.setId(username);
     }
 
@@ -82,6 +83,18 @@ public class User extends Entity<String>{
     @Override
     public String toString() {
         return "User{" + " username:'" + getId() + "', firstName: '" + firstName + "', lastName: '" + lastName + "' }";
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     /**
